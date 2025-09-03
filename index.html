@@ -148,6 +148,10 @@
             font-size: 12px;
             display: none;
         }
+        @media(min-width: 768px){
+    .direction-buttons { display: none; }
+}
+
     </style>
 </head>
 <body>
@@ -198,7 +202,15 @@
             
             <button class="game-button" onclick="pauseGame()" id="pauseBtn" style="margin-top: 15px;">⏸️ Pause</button>
         </div>
-        
+        <!-- Add this inside .game-play-screen, below your canvas and pause button -->
+<div class="direction-buttons" style="margin-top: 20px; display: grid; grid-template-columns: repeat(3, 60px); grid-template-rows: repeat(3, 60px); justify-content: center; gap: 10px;">
+    <button onclick="changeDirection('up')" style="grid-column: 2; grid-row: 1;">⬆️</button>
+    <button onclick="changeDirection('left')" style="grid-column: 1; grid-row: 2;">⬅️</button>
+    <div></div> <!-- empty center -->
+    <button onclick="changeDirection('right')" style="grid-column: 3; grid-row: 2;">➡️</button>
+    <button onclick="changeDirection('down')" style="grid-column: 2; grid-row: 3;">⬇️</button>
+</div>
+
         <!-- Game Over Screen -->
         <div class="game-screen game-over-screen" id="gameOverScreen">
             <h2>Game Over!</h2>
@@ -740,6 +752,25 @@
     gameLoop();
     
     updateDebugInfo('Game State', 'Started');
+}
+function changeDirection(direction) {
+    if (!gameRunning || gamePaused) return;
+
+    switch (direction) {
+        case 'left':
+            if (dx !== 1) { dx = -1; dy = 0; }
+            break;
+        case 'right':
+            if (dx !== -1) { dx = 1; dy = 0; }
+            break;
+        case 'up':
+            if (dy !== 1) { dx = 0; dy = -1; }
+            break;
+        case 'down':
+            if (dy !== -1) { dx = 0; dy = 1; }
+            break;
+    }
+    updateDebugInfo('Snake Direction', `${dx},${dy}`);
 }
 
     </script>
